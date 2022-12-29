@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <script>
+      document.addEventListener(`DOMContentLoaded`, () => {
+        // 변수선언
+        const container = document.querySelector(`#container`);
+        const inputItem = document.querySelector(`#item`);
+        const inputQuantity = document.querySelector(`#quantity`);
+        const btnAdd = document.querySelector(`#btn_add`);
+        const list = document.querySelector(`#list`);
+        const btnSucc = document.querySelector(`#btn_success`);
+        const btnReset = document.querySelector(`#btn_reset`);
+        const divBottom = document.querySelector(`#bottom`);
+
+        let totalCount = 0;
+
+        // 객체속성설정
+        container.style.width = `520px`;
+        container.style.margin = `1rem`;
+        inputItem.style.marginRight = `0.8rem`;
+        inputItem.style.padding = `0.2rem`;
+        inputQuantity.style.padding = `0.1rem`;
+        btnAdd.style.fontSize = `0.9rem`;
+        btnAdd.style.float = `right`;
+        btnAdd.style.marginRight = `0.5rem`;
+        divBottom.style.marginTop = `0.5rem`;
+        divBottom.style.padding = `0.5rem`;
+        divBottom.style.textAlign = `right`;
+        btnSucc.style.fontSize = `1rem`;
+        btnReset.style.fontSize = `1rem`;
+        list.style.height = `520px`;
+        list.style.borderBottom = `1px solid darkGrey`;
+        list.style.boxShadow = `0 0.25rem 0 rgb(0 0 0 /5%) `;
+
+        // 이벤트: 추가하기 버튼
+        btnAdd.addEventListener(`click`, addItemFunc);
+        // 이벤트: 엔터
+        inputItem.addEventListener(`keyup`, (event) => {
+          const ENTER = 13;
+          if (event.keyCode === ENTER) {
+            addItemFunc();
+          }
+        });
+
+        // 함수: 입력 이벤트 처리
+        function addItemFunc() {
+          if (inputItem.value === `` || inputQuantity.value === ``) {
+            window.alert(`구매할 물품과 수량을 입력해 주세요`);
+            return;
+          }
+          let count = totalCount++;
+          if (count === 12) {
+            window.alert(`최대 12가지 입력 가능합니다.`);
+            return;
+          }
+
+          // 객체만들기
+          const divItem = document.createElement(`div`);
+          const checkbox = document.createElement(`input`);
+          const spanItem = document.createElement(`span`);
+          const spanQtt = document.createElement(`span`);
+          // divItem으로 객체들 묶음
+          list.appendChild(divItem);
+          divItem.appendChild(checkbox);
+          divItem.appendChild(spanItem);
+          divItem.appendChild(spanQtt);
+          // 객체속성정의
+          divItem.setAttribute(`data-key`, count);
+          divItem.style.padding = `0.3rem 0.8rem 0.3rem 0.5rem`;
+          divItem.style.margin = `0.5rem`;
+          divItem.style.backgroundColor = `rgba(0 0 0 /10%)`;
+          divItem.style.borderRadius = `5px`;
+          checkbox.setAttribute(`type`, `checkbox`);
+          spanItem.textContent = inputItem.value;
+          spanItem.style.fontSize = `1.2rem`;
+          spanItem.style.marginLeft = `1rem`;
+          spanQtt.textContent = `${inputQuantity.value} 개`;
+          spanQtt.style.float = `right`;
+
+          // input clear
+          inputItem.value = ``;
+          inputQuantity.value = `1`;
+
+          // 이벤트1: 체크박스
+          checkbox.addEventListener(`change`, (event) => {
+            if (event.currentTarget.checked) {
+              spanItem.style.color = `rgba(0 0 0 /30%)`;
+              spanQtt.style.color = `rgba(0 0 0 /30%)`;
+              // 완료항목 삭제
+              btnSucc.addEventListener(`click`, () => {
+                list.removeChild(divItem);
+              });
+            } else {
+              spanItem.style.color = `black`;
+              spanQtt.style.color = `black`;
+            }
+          });
+
+          btnReset.addEventListener(`click`, () => {
+            list.removeChild(divItem);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <h1>장볼목록</h1>
+      <span>구매할것 : </span><input id="item" type="text" />
+      <span>수량 : </span
+      ><select id="quantity">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+      <button id="btn_add">추가하기</button>
+      <hr />
+      <div id="list"></div>
+      <div id="bottom">
+        <button id="btn_success">완료항목 삭제</button>
+        <button id="btn_reset">전체항목 삭제</button>
+      </div>
+    </div>
+  </body>
+</html>
