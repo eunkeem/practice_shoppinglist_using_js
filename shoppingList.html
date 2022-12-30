@@ -51,7 +51,9 @@
             window.alert(`구매할 물품과 수량을 입력해 주세요`);
             return;
           }
+
           let count = totalCount++;
+
           if (count === 12) {
             window.alert(`최대 12가지 입력 가능합니다.`);
             return;
@@ -89,16 +91,22 @@
             if (event.currentTarget.checked) {
               spanItem.style.color = `rgba(0 0 0 /30%)`;
               spanQtt.style.color = `rgba(0 0 0 /30%)`;
-              // 완료항목 삭제
-              btnSucc.addEventListener(`click`, () => {
-                list.removeChild(divItem);
-              });
             } else {
               spanItem.style.color = `black`;
               spanQtt.style.color = `black`;
             }
           });
 
+          // 완료항목 삭제
+          btnSucc.addEventListener(`click`, () => {
+            if (checkbox.checked) {
+              const selectedDivItem = document.querySelector(
+                `div[data-key="${count}"]`
+              );
+              list.removeChild(selectedDivItem);
+            }
+          });
+          // 전체항목삭제
           btnReset.addEventListener(`click`, () => {
             list.removeChild(divItem);
           });
